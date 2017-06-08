@@ -1,0 +1,3 @@
+#!/usr/bin/osascript
+on run args
+set AppleScript's text item delimiters to {" "}if (count of args) is greater than 0 then	copy every item of args as text to stdoutelse	copy "No arguments supplied." to stderrend ifend run

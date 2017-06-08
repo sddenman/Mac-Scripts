@@ -1,0 +1,33 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1265
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww21460\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\f0\fs24 \cf0 REM \{Create Evernote Note from current Notes document (optimized for mail messages and calendar events.\};\
+\
+REM \{Get Server, Database, View and Document url links, and  selected/current Document title.\};\
+serverNameAbb := @Name([Abbreviate];@Subset(@DbName;1));\
+serverNameCommon := @Name([CN];@Subset(@DbName;1));\
+serverDNSName := @DbLookup(""; "":"names.nsf"; "Connections"; serverNameAbb; "OptionalNetworkAddress"; [FailSilent]);\
+REM \{For server names that contain spaces, always use the DNS name instead, because notes:// links do not work when the server name contains spaces.\};\
+serverNameCommon := @If( @Contains(serverNameCommon;" "); serverDNSName; serverNameCommon );\
+urlDatabase := @LowerCase( "notes://" + @URLEncode("Domino";serverNameCommon) + "/" + @WebDbName );\
+urlView := @LowerCase( urlDatabase + "/" + @URLEncode("Domino";@Subset(@ViewTitle;-1)) );\
+urlDocument := @LowerCase( urlDatabase + "/0/" + @Text(@DocumentUniqueID) );\
+serverNameCommonEncoded := @URLEncode("Domino";@LowerCase(serverNameCommon));\
+urlDatabaseDNS := @ReplaceSubstring(urlDatabase; serverNameCommonEncoded; serverDNSName);\
+urlViewDNS := @ReplaceSubstring(urlView; serverNameCommonEncoded; serverDNSName);\
+urlDocumentDNS := @ReplaceSubstring(urlDocument; serverNameCommonEncoded;serverDNSName);\
+databaseTitle := @Subset(@DbTitle;1);\
+documentTitle := @If( Title != ""; Title; Subject != ""; Subject; databaseTitle);\
+documentFromList := @If( From != ""; From; Chair != ""; Chair; "");\
+documentFromENML := "<div><strong>From/Chair:</strong> " + @Implode(documentFromList; "; ") + "</div><div><br/></div>";\
+documentToList := @If( To != ""; To; RequiredAttendees != ""; RequiredAttendees; "");\
+documentToENML := "<div><strong>To/Required Attendees:</strong> <en-todo/>" + @Implode(documentToList; "; <en-todo/>") + "</div><div><br/></div>";\
+documentCcList := @If( Cc != ""; Cc; OptionalAttendees != ""; OptionalAttendees; "");\
+documentCcENML := "<div><strong>Cc/Optional Attendees:</strong> <en-todo/>" + @Implode(documentCcList; "; <en-todo/>") + "</div><div><br/></div>";\
+noteTextENML := "<en-note>" + documentFromENML + documentToENML + documentCcENML + "<div><hr/><br/></div></en-note>";\
+\
+REM \{Create EN Note.\};\
+@URLOpen("x-evernote:///add?title=" + documentTitle + "&enml=" + noteTextENML + "&source=" + urlDocument)}
