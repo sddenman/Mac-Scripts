@@ -1,10 +1,13 @@
 /**
  * @file Create Todoist tasks from selected email messages in MacOS Mail.app.
  * @author Stephen D. Denman <sddenman@gmail.com>
+ * @version 2.0.0
  */
 
- // Set the following contant to true to display debug messages as the script executes
+ // Set the following contants to control display of debug messages as the script executes
 const debugMode = true;
+const displayDebugMsgGiveUpAfter = 3;
+const displayDebugMsgTitle = 'Create Todoist Task from selected Mail message jxa: DEBUG Message';
 
 // The email address of the Todoist project to which new tasks should be emailed
 const theTodoistAddress = {address:'add.task.10875475.191537181.625a42dd17509002@todoist.net', name:'Todoist Inbox'};
@@ -95,9 +98,11 @@ function main() {
 		exit(0);
 	}
 }
-
+/**
+ * @param {string} msg - The message text to display.
+ */
 function displayDebugMsg(msg) {
-	if (debugMode) {mailApp.displayDialog(msg, {givingUpAfter:3, withTitle:'DEBUG Message'})}
+	if (debugMode) {mailApp.displayDialog(msg, {givingUpAfter:displayDebugMsgGiveUpAfter, withTitle:displayDebugMsgTitle})}
 }
 
 main();
