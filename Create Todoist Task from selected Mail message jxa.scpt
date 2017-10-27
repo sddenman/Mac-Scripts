@@ -1,12 +1,31 @@
 /**
- * @file Create Todoist tasks from selected email messages in MacOS Mail.app.
+ * 
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ * @summary Create Todoist tasks from selected email messages in MacOS Mail.app.
  * @author Stephen D. Denman <sddenman@gmail.com>
  * @version 2.0.0
+ * @copyright (C) 2017 Stephen D. Denman
  */
 
  // Set the following contants to control display of debug messages as the script executes
+ /** @constant @type boolean */
 const debugMode = true;
+/** @constant @type int */
 const displayDebugMsgGiveUpAfter = 3;
+/** @constant @type string */
 const displayDebugMsgTitle = 'Create Todoist Task from selected Mail message jxa: DEBUG Message';
 
 // The email address of the Todoist project to which new tasks should be emailed
@@ -99,7 +118,10 @@ function main() {
 	}
 }
 /**
+ * @function displayDebugMsg(msg)
+ * @description Display a message during debugging session for this script.
  * @param {string} msg - The message text to display.
+ * @returns none
  */
 function displayDebugMsg(msg) {
 	if (debugMode) {mailApp.displayDialog(msg, {givingUpAfter:displayDebugMsgGiveUpAfter, withTitle:displayDebugMsgTitle})}
